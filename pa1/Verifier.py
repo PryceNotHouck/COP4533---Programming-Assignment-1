@@ -47,7 +47,7 @@ for i in range(1, len(split) // 2, count):  # O(n)
     for j in range(0, len(row)):
         temp.append((int(row[j]), j + 1))
     hospitals.append(temp)
-print(hospitals)
+print("h_i")
 for i in range(0, len(hospitals)):
     print(hospitals[i])
 
@@ -59,7 +59,7 @@ for i in range(len(split) // 2 + 1, len(split), count):  # O(n)
     for j in range(0, len(row)):
         temp.append((int(row[j]), j + 1))
     applicants.append(temp)
-print(applicants)
+print("a_i")
 for i in range(0, len(applicants)):
     print(applicants[i])
 
@@ -97,25 +97,78 @@ for i in range(0, len(applicants)):
 #m_i is matched input (post-matching from Matcher.py)
 
 def verifier(h_i, a_i, m_i):
-    with open("output.txt", "r") as matched_file:
-        for line in matched_file:
-            line = line.strip()
-            h_m, a_m = map(int, line.split())
-            print(h_m, a_m)
+    # with open("output.txt", "r") as matched_file:
+    #     m_p = []
+    #     for line in matched_file:
+    #         line = line.strip()
+    #         h_mt, a_mt = map(int, line.split())
+    #         print(h_mt, a_mt)
+    #         m_p.append((h_mt, a_mt))
 
+    #     for pair in m_p:
+    #         h_m = pair[0]
+    #         a_m = pair[1]
+    #
+    #         #for the given applicant in order of the current hospitals preference
+    #         for a in h_i[h_m-1]:
+    #             #if the given applicant in the ordered preference list != the matching applicant,
+    #             # must check its corresponding preference
+    #             if h_i[h_m-1][a] != a_m:
+    #                 #for the given hospital in order of the current applicants preference
+    #                 for h in a_i[a_m-1]:
+    #                     #if the given hospital != the matching hospital, check the corresponding preference
+    #                     if a_i[a_m-1][h] != h_m:
+    #                         #this line needs to be changed
+    #                         #needs to be, if the applicants preference for H > H' (where H' is its current matching)
+    #                         #then it is a blocking pair, so we need to know every applicants current matching
+    #                         corr_pref = 0
+    #                         for temp_pair in m_p:
+    #                             h_m_t = temp_pair[0]
+    #                             a_m_t = temp_pair[1]
+    #                             if a_m_t == a_i[a_m-1][h]:
+    #                                 corr_pref = h_m_t
+    #                         if a_i[corr_pref][h] > a_m:
+    #                             print("blocking pair detected")
+    #                             return True
+    #                     if h_i[h_m-1][a] == a_m:
+    #                         break
+    #             if a_i[a_m-1][h] == h_m:
+    #                 break
+    # print("verified stable")
+    # return False
+    with open("output.txt", "r") as matched_file:
+        m_p = []
         for line in matched_file:
             line = line.strip()
-            h_m, a_m = map(int, line.split())
-            for a in h_i[h_m]:
-                if a != a_m:
-                    for h in a_i[a_m]:
-                        if h != h_m:
-                            if a_i[h] > a_m:
+            h_mt, a_mt = map(int, line.split())
+            print(h_mt, a_mt)
+            m_p.append((h_mt, a_mt))
+        for pair in m_p:
+            h_m = pair[0]
+            a_m = pair[1]
+            for a in h_i[h_m-1]:
+                print(a)
+                print(h_i[h_m-1])
+                print(h_i[h_m-1][a])
+                if h_i[h_m-1][a] != a_m:
+                    for h in a_i[a_m-1]:
+                        if a_i[a_m-1][h] != h_m:
+                            corr_pref = 0
+                            for temp_pair in m_p:
+                                h_m_t = temp_pair[0]
+                                a_m_t = temp_pair[1]
+                                if a_m_t == a_i[a_m-1][h]:
+                                    corr_pref = h_m_t
+                            if a_i[corr_pref][h] > a_m:
+                                print("blocking pair detected")
                                 return True
-                        if h == h_m:
+                        if h_i[h_m-1][a] == a_m:
                             break
-                if a == a_m:
+                if a_i[a_m-1][h] == h_m:
                     break
+    print("verified stable")
     return False
 
 verifier(hospitals, applicants, m_i)
+
+
