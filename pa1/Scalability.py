@@ -1,7 +1,6 @@
 # x-axis = n
 # y-axis = runtime
 
-from Matcher import matcher
 import random
 
 def make_input(n):
