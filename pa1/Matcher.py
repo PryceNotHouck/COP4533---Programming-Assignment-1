@@ -8,28 +8,32 @@ input = """
 1 2 3
 """
 
-applicants = []
-hospitals = []
-count = int(input[1])
-split = input[1:].split()
+def format_preferences(input_text):
+    applicants = []
+    hospitals = []
+    count = int(input_text[1])
+    split = input_text[1:].split()
 
-# hospital
-for i in range(1, len(split) // 2, count):  # O(n)
-    row = split[i: i + count]
-    temp = []
-    for j in range(0, len(row)):
-        temp.append((int(row[j]), j + 1))
-    hospitals.append(temp)
-print("Hospitals:", hospitals)
+    # hospital
+    for i in range(1, len(split) // 2, count):  # O(n)
+        row = split[i: i + count]
+        temp = []
+        for j in range(0, len(row)):
+            temp.append((int(row[j]), j + 1))
+        hospitals.append(temp)
+    #print("Hospitals:", hospitals)
 
-# applicant
-for i in range(len(split) // 2 + 1, len(split), count):  # O(n)
-    row = split[i: i + count]
-    temp = []
-    for j in range(0, len(row)):
-        temp.append((int(row[j]), j + 1))
-    applicants.append(temp)
-print("Applicants:", applicants)
+    # applicant
+    for i in range(len(split) // 2 + 1, len(split), count):  # O(n)
+        row = split[i: i + count]
+        temp = []
+        for j in range(0, len(row)):
+            temp.append((int(row[j]), j + 1))
+        applicants.append(temp)
+    #print("Applicants:", applicants)
+    return applicants, hospitals
+
+applicants, hospitals = format_preferences(input)
 
 # while (some hospital is free and hasn't been matched to every applicant) {
     # Choose such a hospital h
