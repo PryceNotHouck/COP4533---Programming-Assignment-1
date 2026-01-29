@@ -13,7 +13,7 @@ hospitals = []
 count = int(input[1])
 split = input[1:].split()
 
-# hospital
+# hospital input parsing
 for i in range(1, len(split) // 2, count):  # O(n)
     row = split[i: i + count]
     temp = []
@@ -22,7 +22,7 @@ for i in range(1, len(split) // 2, count):  # O(n)
     hospitals.append(temp)
 print(hospitals)
 
-# applicant
+# applicant input parsing
 for i in range(len(split) // 2 + 1, len(split), count):  # O(n)
     row = sgplit[i: i + count]
     temp = []
@@ -31,10 +31,25 @@ for i in range(len(split) // 2 + 1, len(split), count):  # O(n)
     applicants.append(temp)
 print(applicants)
 
-#oi is original input, mi is matched input
-def verifier(oi, mi):
-    #parse oi
-    #while H preference != oi P_S:
-        #find S matching P_S
-        #if S matching P < H_P
+#h_i is hospital input (unmatched)
+#a_i is applicant input (unmatched)
+#m_i is matched input (post-matching from Matcher.py)
+def verifier(h_i, a_i, m_i):
+
+    #For each matching in m_i:
+        #check every one of H's preferences for every A in its pref_list up until H's matched A
+        #if one of these As has a preference for H > than its matched H', we have a blocking pair
+
+        #For all N matchings in m_i
+            #for some A in H's preference list:
+                #if A != H's matched A:
+                    #check A's H' (A's match)
+                    #if A's preference for H > H':
+                        #blocking pair = true
+                        #return true
+                    #else:
+                        #continue
+                #else:
+                    #continue
+    #return false
     pass
