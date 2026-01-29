@@ -54,9 +54,11 @@ def matcher(applicants, hospitals):
     while (len(unpaired_h) > 0):
         h = unpaired_h[0]
         a = -1
-        for pref in hospitals[h]:  # O(1)
+        for pref in hospitals[h - 1]:  # O(1)
             if pref[1] == 1:
                 a = pref[0]
+        if a == -1:
+            raise ValueError("h has no first preference")
 
         # if (a is unpaired)
             # pairs.append([ h , a ])
@@ -69,6 +71,19 @@ def matcher(applicants, hospitals):
                 # unpaired_h.append(h)
             # else:
                 # continue
+
+        if a in unpaired_a:
+            pairs.append([h, a])
+            unpaired_h.pop(0)
+            unpaired_a.remove(a)
+        else:
+            for pref in applicants[a - 1]:
+                if pref[0] == h:
+                    current = pref[1]
+            if (a == 1):
+                pass
+            else:
+                continue  # reject
 
     return pairs # [h, a]
 
