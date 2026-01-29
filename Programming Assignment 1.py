@@ -51,27 +51,27 @@ def matcher(recipients, proposers):
         unpaired_p.append(i + 1)
         unpaired_r.append(i + 1)  # same length and indexes
 
-    h_choice = 1
+    p_choice = 1
     num_proposals = 0
     while len(unpaired_p) > 0:
-        if h_choice > len(recipients):
-            raise IndexError("h has exhausted possible choices")
+        if p_choice > len(recipients):
+            raise IndexError("proposer has exhausted possible choices")
 
-        h = unpaired_p[0]
-        a = -1
-        for pref in proposers[h - 1]:  # O(1)
-            if pref[1] == h_choice:
-                a = pref[0]
+        p = unpaired_p[0]
+        r = -1
+        for pref in proposers[p - 1]:  # O(1)
+            if pref[1] == p_choice:
+                r = pref[0]
                 break
-        if a == -1:
-            raise ValueError("h has no selected preference")
+        if r == -1:
+            raise ValueError("proposer has no selected preference")
 
         num_proposals += 1
-        if a in unpaired_r:
-            pairs.append([h, a])
+        if r in unpaired_r:
+            pairs.append([p, r])
             unpaired_p.pop(0)
-            unpaired_r.remove(a)
-            h_choice = 1
+            unpaired_r.remove(r)
+            p_choice = 1
         else:
             current_p = -1
             current_p_pref = -1
@@ -79,12 +79,12 @@ def matcher(recipients, proposers):
             pair_i = -1
 
             for i in range(len(pairs)):
-                if pairs[i][1] == a:
+                if pairs[i][1] == r:
                     current_p = pairs[i][0]
                     pair_i = i
                     break
-            for pref in recipients[a - 1]:
-                if pref[0] == h:
+            for pref in recipients[r - 1]:
+                if pref[0] == p:
                     candidate_p_pref = pref[1]
                 if pref[0] == current_p:
                     current_p_pref = pref[1]
@@ -92,11 +92,12 @@ def matcher(recipients, proposers):
                     break
 
             if candidate_p_pref < current_p_pref:
-                pairs[pair_i][0] = h
+                pairs[pair_i][0] = p
+                unpaired_p.remove(p)
                 unpaired_p.append(current_p)
-                h_choice = 1
+                p_choice = 1
             else:
-                h_choice += 1
+                p_choice += 1
                 continue  # reject
     print("Number of Proposals:", num_proposals)
     return pairs # [h, a]
@@ -112,9 +113,5 @@ if __name__ == '__main__':
     matchings = matcher(recipients = applicants, proposers = hospitals)
     for match in matchings:
         print(match[0], match[1])
-    # 1 2
-    # 2 3
-    # 3 1
-    # [[1, 2], [2, 3], [3, 1]]
 
     verifier(applicants, hospitals, matchings)
