@@ -1,19 +1,27 @@
 # x-axis = n
 # y-axis = runtime
 
+#from Matcher import matcher
 import random
 
 def make_input(n):
     output = f"{n}\n"
 
-    proposals = []
-    recipients = []
+    proposer_inputs = []
+    recipient_inputs = []
     for i in range(n):
         row = [j for j in range(1, n + 1)]
-        random.shuffle(row)
-        print(row)
+        while row in proposer_inputs:
+            random.shuffle(row)
+        proposer_inputs.append(row)
+
+        while row in recipient_inputs:
+            random.shuffle(row)
+        recipient_inputs.append(row)
 
     return output
 
 
-make_input(3)
+if __name__ == '__main__':
+    n = 3
+    input = make_input(n)
