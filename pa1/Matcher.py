@@ -11,8 +11,9 @@ input = """
 def format_preferences(input_text):
     applicants = []
     hospitals = []
-    count = int(input_text[1])
-    split = input_text[1:].split()
+    count_index = input_text[1:].find('\n')
+    count = int(input_text[1: count_index + 1])
+    split = input_text[count_index + 1:].split()
 
     # hospital
     for i in range(1, len(split) // 2, count):  # O(n)
@@ -103,19 +104,10 @@ def matcher(recipients, proposers):
             else:
                 p_choice += 1
                 continue  # reject
-    print("Number of Proposals:", num_proposals)
+    #print("Number of Proposals:", num_proposals)
     return pairs # [h, a]
-
-def verifier(applicants, hospitals, output):
-    checked = [0, 0]  # [matched to one partner no duplicates, stable], ex [1, 1] for both true
-
-    # 6 7 i love code formatting
-
-    return checked
 
 if __name__ == '__main__':
     matchings = matcher(recipients = applicants, proposers = hospitals)
     for match in matchings:
         print(match[0], match[1])
-
-    verifier(applicants, hospitals, matchings)

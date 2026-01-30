@@ -3,7 +3,6 @@ import Matcher
 from matplotlib import pyplot as plt
 import time
 import numpy as np
-import math
 import random
 
 def make_input(n):  # O(n!) (not part of matcher/verifier so that's fine)
@@ -44,13 +43,16 @@ def make_input(n):  # O(n!) (not part of matcher/verifier so that's fine)
 
 
 if __name__ == '__main__':
-    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
+    # sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
+    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
     times = []
     for n in sizes:
         input_text = make_input(n)
-        recipients, proposers = Matcher.format_preferences(input_text)
         start = time.perf_counter()
+        ###########################
+        recipients, proposers = Matcher.format_preferences(input_text)
         temp = Matcher.matcher(recipients = recipients, proposers = proposers)
+        ###########################
         end = time.perf_counter()
         times.append(end - start)
 
@@ -58,7 +60,7 @@ if __name__ == '__main__':
 
     sizes = np.array(sizes)
     times = np.array(times)
-    z = np.polyfit(x = sizes, y = times, deg = 1000)
+    z = np.polyfit(x = sizes, y = times, deg = len(sizes))
     p = np.poly1d(z)
     plt.plot(sizes, p(sizes))
 
