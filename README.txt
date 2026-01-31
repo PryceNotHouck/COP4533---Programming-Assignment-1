@@ -1,17 +1,21 @@
 Pryce Houck (57790944)
-Trevor DeBord (UFID)
+Trevor DeBord (40228131)
 
-
+Assumptions:
+There will always be a new line in the input.txt file before the parameters
+There will never be more than 1 new line in the output.txt file after the matchings
 
 Usage Instructions:
-Matcher - Place an input in a string at the top of the file in the same format as the included sample input,
+Matcher - Place an input within the "input.txt" file in the same format as the included sample input,
           run the main branch at the bottom.
 
-Verifier - []
+Verifier - Run Matcher with data within "input.txt". A corresponding matching list will be added to "output.txt",
+            after running Matcher and populating the "output.txt" file, you can run verifier by executing the function at the bottom
 
 Scalability - Change the line between the hashes in the main branch to specify which function is being measured,
               run the main branch.
 
+Sample inputs and outputs are included in the "input.txt" and "output.txt" files to begin with
 
 
 Dependencies & Assumptions:
@@ -20,7 +24,6 @@ to include the matplotlib and numpy libraries, can be installed through pip or c
 
 The graph produced by Scalability.py should automatically open a window displaying the result if it is being
 run in an IDE, we do not know how this would change if it is being run through terminal.
-
 
 
 Part C Approach:
@@ -41,3 +44,8 @@ are then passed into the Gale-Shapely algorithm (for the verifier, this output i
 The time.perf_counter() function is then invoked again to create a final timestamp, and the difference between the
 two times are recorded as the runtime. Once all instances are recorded, matplotlib is used to create a scatterplot and
 define a trendline over the datapoints, which is then formatted and displayed.
+
+You can observe that the runtime for the verifier is much lower. While the theoretical worst case for both is O(n^2) the
+average runtime for the verifier is much lower because on average the hospitals will pick an applicant not very far down its
+preference list, thus the inner loop will not have to search very deep because it can only be unstable if both sides have a higher
+preference than their matching partners, so as soon as we reach its matched preference the inner loop terminates.

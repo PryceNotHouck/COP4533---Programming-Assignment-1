@@ -1,5 +1,6 @@
 import copy
 import Matcher
+import Verifier
 from matplotlib import pyplot as plt
 import time
 import numpy as np
@@ -43,30 +44,76 @@ def make_input(n):  # O(n!) (not part of matcher/verifier so that's fine)
 
 
 if __name__ == '__main__':
-    # sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
-    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
-    times = []
+    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+    matcher_times = []
+    verifier_times = []
+
     for n in sizes:
         input_text = make_input(n)
+
+        ############################
+        # Run Matcher
+        ############################
         start = time.perf_counter()
-        ###########################
         recipients, proposers = Matcher.format_preferences(input_text)
-        temp = Matcher.matcher(recipients = recipients, proposers = proposers)
-        ###########################
+        temp = Matcher.matcher(recipients=recipients, proposers=proposers)
+
         end = time.perf_counter()
-        times.append(end - start)
+        matcher_times.append(end - start)
 
-    plt.scatter(sizes, times, color = 'red')
+        ############################
+        # Verifier Formatting
+        ############################
 
-    sizes = np.array(sizes)
-    times = np.array(times)
-    z = np.polyfit(x = sizes, y = times, deg = len(sizes))
+        # Map the matches in order to push into our Verifier function
+        h_match = {match[0]: match[1] for match in temp}
+        a_match = {match[1]: match[0] for match in temp}
+
+        # Grab preferences
+        h_prefs, a_prefs = Matcher.format_preferences(input_text)
+
+        # convert to list of dictionaries
+        h_prefs_dict_list = []
+        for line in h_prefs:
+            d = {}
+            for pref, a in line:  # assuming each element is (rank, applicant)
+                d[a] = pref
+            h_prefs_dict.append(d)
+
+        a_prefs_dict_list = []
+        for line in a_prefs:
+            d = {}
+            for pref, h in line:  # assuming each element is (rank, hospital)
+                d[h] = pref
+            a_prefs_dict.append(d)
+
+        ############################
+        # Run Verifier
+        ############################
+        start = time.perf_counter()
+        Verifier.verifier(h_prefs_dict_list, a_prefs_dict_list, h_match, a_match)
+        end = time.perf_counter()
+        verifier_times.append(end - start)
+
+    ############################
+    # Graph Matcher
+    ############################
+    plt.scatter(sizes, matcher_times, color='red', label='Matcher Runtime')
+    z = np.polyfit(x=sizes, y=matcher_times, deg=len(sizes))
     p = np.poly1d(z)
-    plt.plot(sizes, p(sizes))
+    plt.plot(sizes, p(sizes), color='red')
 
-    plt.title('Gale-Shapely Matcher Scalability')
+    ############################
+    # Graph Verifier
+    ############################
+    plt.scatter(sizes, verifier_times, color='blue', label='Verifier Runtime')
+    z_v = np.polyfit(x=sizes, y=verifier_times, deg=len(sizes))
+    p_v = np.poly1d(z_v)
+    plt.plot(sizes, p_v(sizes), color='blue')
+
+    plt.title('Gale-Shapely Matcher and Verifier Scalability')
     plt.xlabel("Input Size (n)")
     plt.ylabel("Runtime (s)")
     plt.legend()
-
+    plt.grid(True)
     plt.show()

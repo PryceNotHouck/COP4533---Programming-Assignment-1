@@ -1,12 +1,5 @@
-input = """
-3
-1 2 3
-2 3 1
-2 1 3
-2 1 3
-1 2 3
-1 2 3
-"""
+with open("input.txt", "r") as file:
+    input = file.read()
 
 def format_preferences(input_text):
     applicants = []
@@ -109,5 +102,7 @@ def matcher(recipients, proposers):
 
 if __name__ == '__main__':
     matchings = matcher(recipients = applicants, proposers = hospitals)
-    for match in matchings:
-        print(match[0], match[1])
+    with open("output.txt", "w") as writefile:
+        for match in matchings:
+            print(match[0], match[1])
+            writefile.write(f"{match[0]} {match[1]}\n")
