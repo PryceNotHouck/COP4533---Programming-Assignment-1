@@ -4,6 +4,7 @@ Trevor DeBord (40228131)
 Assumptions:
 There will always be a new line in the input.txt file before the parameters
 There will never be more than 1 new line in the output.txt file after the matchings
+Matcher can handle blank inputs but the Verifier can not. Please only run the verifier with a valid non empty output.txt and input.txt file
 
 Usage Instructions:
 Matcher - Place an input within the "input.txt" file in the same format as the included sample input,
