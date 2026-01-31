@@ -44,7 +44,7 @@ def make_input(n):  # O(n!) (not part of matcher/verifier so that's fine)
 
 if __name__ == '__main__':
     # sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
-    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
     times = []
     for n in sizes:
         input_text = make_input(n)
