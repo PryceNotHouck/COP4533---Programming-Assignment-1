@@ -51,6 +51,7 @@ if __name__ == '__main__':
     for n in sizes:
         input_text = make_input(n)
 
+        #sections are titled using hashes, my coding parter says it looks like AI but I think it looks epic
         ############################
         # Run Matcher
         ############################
@@ -72,20 +73,20 @@ if __name__ == '__main__':
         # Grab preferences
         h_prefs, a_prefs = Matcher.format_preferences(input_text)
 
-        # convert to list of dictionaries
+        # convert the preference list to a list of dictionaries
         h_prefs_dict_list = []
-        for line in h_prefs:
+        for prefs in h_prefs:
             d = {}
-            for pref, a in line:  # assuming each element is (rank, applicant)
+            for pref, a in prefs:
                 d[a] = pref
-            h_prefs_dict.append(d)
+            h_prefs_dict_list.append(d)
 
         a_prefs_dict_list = []
-        for line in a_prefs:
+        for prefs in a_prefs:
             d = {}
-            for pref, h in line:  # assuming each element is (rank, hospital)
+            for pref, h in prefs:
                 d[h] = pref
-            a_prefs_dict.append(d)
+            a_prefs_dict_list.append(d)
 
         ############################
         # Run Verifier
@@ -102,6 +103,12 @@ if __name__ == '__main__':
     z = np.polyfit(x=sizes, y=matcher_times, deg=len(sizes))
     p = np.poly1d(z)
     plt.plot(sizes, p(sizes), color='red')
+    plt.title('Gale-Shapley Matcher Scalability')
+    plt.xlabel("Input Size (n)")
+    plt.ylabel("Runtime (s)")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
     ############################
     # Graph Verifier
@@ -110,8 +117,7 @@ if __name__ == '__main__':
     z_v = np.polyfit(x=sizes, y=verifier_times, deg=len(sizes))
     p_v = np.poly1d(z_v)
     plt.plot(sizes, p_v(sizes), color='blue')
-
-    plt.title('Gale-Shapely Matcher and Verifier Scalability')
+    plt.title('Gale-Shapley Verifier Scalability')
     plt.xlabel("Input Size (n)")
     plt.ylabel("Runtime (s)")
     plt.legend()

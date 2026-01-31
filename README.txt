@@ -12,11 +12,10 @@ Matcher - Place an input within the "input.txt" file in the same format as the i
 Verifier - Run Matcher with data within "input.txt". A corresponding matching list will be added to "output.txt",
             after running Matcher and populating the "output.txt" file, you can run verifier by executing the function at the bottom
 
-Scalability - Change the line between the hashes in the main branch to specify which function is being measured,
-              run the main branch.
+Scalability - Can change the number of inputs by adjusting the size array in the main branch at the bottom
 
 Sample inputs and outputs are included in the "input.txt" and "output.txt" files to begin with
-
+There may be issues with file parsing if using VScode, Pycharm does not reproduce these errors
 
 Dependencies & Assumptions:
 Matcher.py and Verifier.py work with baseline Python 3.11 functionality, Scalability.py requires the environment
@@ -26,7 +25,7 @@ The graph produced by Scalability.py should automatically open a window displayi
 run in an IDE, we do not know how this would change if it is being run through terminal.
 
 
-Part C Approach:
+Part C Approach and Observations:
 {Images for graphs can be found in the parent directory in the repository}
 
 Our approach to this problem, in Scalability.py, has two components: one to generate inputs, and one to
@@ -45,7 +44,10 @@ The time.perf_counter() function is then invoked again to create a final timesta
 two times are recorded as the runtime. Once all instances are recorded, matplotlib is used to create a scatterplot and
 define a trendline over the datapoints, which is then formatted and displayed.
 
+OBSERVATIONS:
 You can observe that the runtime for the verifier is much lower. While the theoretical worst case for both is O(n^2) the
 average runtime for the verifier is much lower because on average the hospitals will pick an applicant not very far down its
 preference list, thus the inner loop will not have to search very deep because it can only be unstable if both sides have a higher
 preference than their matching partners, so as soon as we reach its matched preference the inner loop terminates.
+From preliminary testing it seems like the average runtime might actually be similar to O(logn) but not enough testing was done to confirm this
+The matching algorithm appears to run in an expected O(n^2)
