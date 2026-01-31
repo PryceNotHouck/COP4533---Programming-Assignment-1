@@ -77,6 +77,7 @@ def verifier(h_pref_raw, a_pref_raw, h_match, a_match):
     #h_match = list of all hospitals and their corresponding a matches
     #a_match = list of all applicants and their corresponding h matches
 
+    #note we have to be careful with the indexing because we're swapping between indexing lists and dictionaries
     #a blocking pair is when we have an a and an h whomst both prefer each other over their current match
 
     #for all hospitals indexed from 1->n
@@ -89,7 +90,7 @@ def verifier(h_pref_raw, a_pref_raw, h_match, a_match):
             if h_pref_raw[h_curr-1][a_curr] < h_pref_raw[h_curr-1][matched_a_to_h_curr]:
                 #flag hospital with the eclipsing preference
                 flagged_h = a_match[a_curr]
-                #if there exists an applicant whose preference for the flagged h is eclipsed by their current preference we have a blocking pair
+                #does the corresponding flagged hospital's greater-preference-applicant prefer the flagged hospital over its current matching?
                 if a_pref_raw[a_curr - 1][h_curr] < a_pref_raw[a_curr - 1][flagged_h]:
                     print()
                     print("there exists a blocking pair")
@@ -98,7 +99,7 @@ def verifier(h_pref_raw, a_pref_raw, h_match, a_match):
                     # print("higher preference a: ", a_curr)
                     # print("flagged h: ", flagged_h)
                     print("h:", h_curr, "prefers a:", a_curr, " over a:", h_match[h_curr])
-                    print("a:", a_curr, "prefers h:", h_curr, " over a:", a_match[a_curr])
+                    print("a:", a_curr, "prefers h:", h_curr, " over h:", a_match[a_curr])
                     return False
     print("the matching is stable")
     return True
